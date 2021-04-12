@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give respect - in mono!</title>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script>
+        function initWithQuery()
+        {
+            var urlParams = new URLSearchParams(window.location.search);
+            this.source = urlParams.get('u');
+            this.$watch('source', (value) => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('u', value);
+                history.pushState(null, document.title, url.toString());
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        input {
+            font-size: 1.2rem;
+            outline: none;
+            border-radius: 4px;
+            padding: 0.5rem 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div x-data="{ source: '' }" x-init="initWithQuery">
+        <label for="source">Make it mono</label>
+        <input id="source" type="text" value="" x-model.debounce="source">
+        <iframe style="width: 100%; height: calc( 100vh - 80px ); filter: grayscale(100%)" x-bind:src="source"></iframe>
+    </div>
+</body>
+</html>
